@@ -1,28 +1,36 @@
 //Código JavaScript
 //ELABORADO POR: ALEJANDRO CRUZ ALVAREZ CARRANZA
-//Función constructora Jugador
+
+//Clase Jugador
 class Jugador{
+    //definicion de variables privadas
     #_caraDado1=0;
     #_caraDado2=0;
 
+    //constructor de la clase jugador
     constructor(nom){
         this.nombre=nom
     }
     
+    //get y set de caraDado1 (variable privada)
     get caraDado1(){return this.#_caraDado1;}
     set caraDado1(valorDado1){this.#_caraDado1=valorDado1}
 
+    //get y set de CaraDado2 (variable privada)
     get caraDado2(){return this.#_caraDado2}
     set caraDado2(valorDado2){this.#_caraDado2=valorDado2}
 }
 
+//Clase JuegoDados
 class JuegoDados{
+    //Constructor de la clase Juego Dados
     constructor(numJuego,j1,j2){
         this.numeroJuego=numJuego;
         this.jugador1=new Jugador(j1.nombre);
         this.jugador2=new Jugador(j2.nombre);
     }
-
+    
+    //Metodo para tirar los dados
     tirarDados(){
         this.jugador1.caraDado1 = Math.round((Math.random() * 5) + 1);
         this.jugador1.caraDado2 = Math.round((Math.random() * 5) + 1);
@@ -30,6 +38,7 @@ class JuegoDados{
         this.jugador2.caraDado2 = Math.round((Math.random() * 5) + 1);
     }
 
+    //Metodo para determinar al ganador
     determinarGanador(){
         if ( (this.jugador1.caraDado1 + this.jugador1.caraDado2 == 7)
             && (this.jugador2.caraDado1 + this.jugador2.caraDado2 != 7) )
@@ -41,25 +50,32 @@ class JuegoDados{
     }
 }
 
+//Clase del torneo
 class torneoDados{
+    //definicion de variables privadas
     #_juegosGanadosJugador1=0;
     #_juegosGanadosJugador2=0;
-
+    
+    //Constructor de la clase del torneo
     constructor(){
         this.jugadas = new Array();
     }
-
+    
+    //get y set de los juegos ganados del jugador 1 (variable privada)
     get juegosGanadosJugador1(){return this.#_juegosGanadosJugador1}
     set juegosGanadosJugador1(valorGanadosJ1){this.#_juegosGanadosJugador1=valorGanadosJ1}
 
+    //get y set de los juegos ganados del jugador 2 (variable privada)
     get juegosGanadosJugador2(){return this.#_juegosGanadosJugador2}
     set juegosGanadosJugador2(valorGanadosJ2){this.#_juegosGanadosJugador2=valorGanadosJ2}
 
+    //metodo para instanciar objetos necesarios para llevar a cabo el torneo
     crear(j1,j2){
         this.jugador1 = new Jugador(j1);
         this.jugador2 = new Jugador(j2);
     }
 
+    //metodo donde se llevan a cabo las partidas del torneo
     jugar(){
         let salida = true;
         while(salida){
@@ -78,6 +94,7 @@ class torneoDados{
         }
     }
 
+    //creacion de metodo privado donde se obtienen los resultados
     #_resultado(){
         if(this.juegosGanadosJugador1==3){
             return this.jugador1.nombre;
@@ -86,10 +103,12 @@ class torneoDados{
         }
     }
 
+    //get del metodo de resultado (metodo privado)
     get resultado(){
         return this.#_resultado();
     }
-
+    
+    //set del metodo de resultado (metodo privado) - este funciona para cambia el resultado (cambiando al ganador por otro)
     set resultado(ganador){
         if(ganador==this.jugador1.nombre){
             if(this.juegosGanadosJugador1!=3){
@@ -107,11 +126,12 @@ class torneoDados{
     }
 }
 
+//Uso de las Clases para demostrar su correcto funcionamiento
 const primerTorneo = new torneoDados();
 const segundoTorneo = new torneoDados();
 primerTorneo.crear("Alejandro","Agustin");
 primerTorneo.jugar();
-console.log("(Primer Torneo) Alejandro vs Agustin");
+console.log("(Primer Torneo) (J1)Alejandro vs (J2)Agustin");
 console.log("(Primer Torneo) Ganador: "+primerTorneo.resultado);
 console.log("(Primer Torneo) Juegos Totales Jugados: "+primerTorneo.jugadas.length);
 console.log("(Primer Torneo) Partidas Ganadas por "+primerTorneo.jugador1.nombre+": "+primerTorneo.juegosGanadosJugador1);
@@ -122,14 +142,16 @@ console.log("");
 
 segundoTorneo.crear(primerTorneo.resultado,"Carlos");
 segundoTorneo.jugar();
-console.log("Carlos vs "+primerTorneo.resultado);
+console.log("(Segundo Torneo) (J1)"+primerTorneo.resultado+" vs (J2)Carlos");
 console.log("(Segundo Torneo) Ganador: "+segundoTorneo.resultado);
 console.log("(Segundo Torneo) Juegos Totales Jugados: "+segundoTorneo.jugadas.length);
 console.log("(Segundo Torneo) Partidas Ganadas por "+segundoTorneo.jugador1.nombre+": "+segundoTorneo.juegosGanadosJugador1);
 console.log("(Segundo Torneo) Partidas Ganadas por "+segundoTorneo.jugador2.nombre+": "+segundoTorneo.juegosGanadosJugador2);
 console.log("(Segundo Torneo) Resultado/Ganador de la partida No. "+(segundoTorneo.jugadas.length-2)+": "+segundoTorneo.jugadas[segundoTorneo.jugadas.length-3].determinarGanador());
+segundoTorneo.resultado=segundoTorneo.jugador1.nombre;
+console.log("(Segundo Torneo) Resultado cambiado al jugador 1:"+segundoTorneo.resultado);
 
-
+//Instrucciones y codigo base ofrecido
 /* Programar la clase que represente al torneo
 clase torneoDados
     jugadas //Arreglo de objetos de clase JuegoDados
